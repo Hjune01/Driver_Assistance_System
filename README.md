@@ -45,13 +45,18 @@
 
 ## 🛠️ 기술 스택
 
-| 항목        | 사용 기술 |
-|-------------|-----------|
-| 영상 입력     | USB 카메라 (OpenCV VideoCapture) |
-| 차량 탐지     | YOLOv5s or YOLOv5n (ONNX or PyTorch) |
-| 밝기 판단     | 평균 밝기 계산 (OpenCV grayscale mean) |
-| 차선 인식     | Canny Edge + Hough Transform |
-| LED 제어     | RPi.GPIO 또는 gpiozero 모듈 |
-| 장치         | Raspberry Pi 4 + 카메라 + LED 회로 + LCD |
+| 항목                 | 사용 기술 및 도구                                                                                                                    |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| **영상 입력**          | `cv2.VideoCapture`를 통한 USB 웹캠 실시간 스트리밍                                                                                        |
+| **밝기 판단**          | OpenCV Grayscale 변환 + `numpy.mean()`을 활용한 조도 판단                                                                               |
+| **야간 화질 보정**       | CLAHE (국소 대비 향상), Median Blur, 감마 보정 함수                                                                                       |
+| **차량 탐지 (학습)**     | YOLOv5s / YOLOv5n 모델<br>PyTorch 기반 `train.py` 실행 (Google Colab 환경)<br>커스텀 데이터셋 zip 업로드 및 YOLO 포맷 구조 (`images/`, `labels/`) 사용 |
+| **차량 탐지 (추론)**     | `detect.py` 실행을 통한 실시간 객체 감지<br>또는 ONNX 변환을 통한 경량화 추론 (라즈베리파이용)                                                               |
+| **차선 인식 (세그멘테이션)** | `LLDNet.h5` 딥러닝 모델 사용 (Keras/TensorFlow 기반)<br>입력 크기 `(160, 80)`, 출력 마스크 시각화 및 평균화                                            |
+| **LED 제어**           | Raspberry Pi의 `RPi.GPIO` 또는 `gpiozero`를 통한 핀 제어                                                                               |
+| **모델 성능 평가**       | Dice Loss, IOU, Precision/Recall/F1 Score 커스텀 metric 정의                                                                       |
+| **하드웨어 구성**        | Raspberry Pi 4 + USB 카메라 + LED 회로 + (선택적 LCD 출력)                                                                              |
+| **개발/훈련 환경**       | Google Colab (모델 학습), Raspberry Pi (실행), Python 3.x                                                                           |
+
 
 ---
